@@ -4,6 +4,13 @@ s3 = boto3.client('s3')
 
 bucket_name = 'my-static-web-123456'
 
-s3.upload_file('index.html', bucket_name, 'index.html')
+s3.upload_file(
+    'index.html',
+    bucket_name,
+    'index.html',
+    ExtraArgs={
+        'ContentType': 'text/html'
+    }
+)
 
 print("Deployment Successful!")
