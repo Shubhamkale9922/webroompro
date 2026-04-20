@@ -24,8 +24,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AKIASALD7VOGF46C2UPX }}
-          aws-secret-access-key: ${{ secrets.WmNLuWEgMaSZGthBN+Ss6jt2D5z8XSpL3+jSvFEc }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
 
       - name: Run deployment script
