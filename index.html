@@ -2,523 +2,96 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Shubham Kale | Portfolio — Animating Developer</title>
-  <!-- Google Fonts for modern typography -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-  <!-- Font Awesome 6 (free icons) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #0a0c10;
-      color: #eef2ff;
-      scroll-behavior: smooth;
-      overflow-x: hidden;
-    }
-
-    /* animated gradient background (subtle moving light) */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.08), transparent 70%),
-                  radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.06), transparent 65%);
-      pointer-events: none;
-      z-index: -2;
-    }
-
-    /* animated noise/scanlines? minimal extra flair */
-    .animated-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.02) 0px, rgba(255,255,255,0.01) 2px, transparent 3px, transparent 6px);
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    /* custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #111827;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #3b82f6;
-      border-radius: 10px;
-    }
-
-    /* navigation with backdrop blur + glassmorphism */
-    .glass-nav {
-      background: rgba(17, 24, 39, 0.75);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(59,130,246,0.2);
-      transition: all 0.3s ease;
-    }
-
-    .nav-link {
-      position: relative;
-      transition: color 0.2s;
-      font-weight: 500;
-    }
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0%;
-      height: 2px;
-      background: #3b82f6;
-      border-radius: 4px;
-      transition: width 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    }
-    .nav-link:hover::after {
-      width: 100%;
-    }
-    .nav-link:hover {
-      color: #60a5fa;
-    }
-
-    /* animated hero text */
-    .hero-glow {
-      animation: fadeUp 0.9s ease-out, glowPulse 3s infinite alternate;
-    }
-    @keyframes fadeUp {
-      0% { opacity: 0; transform: translateY(30px);}
-      100% { opacity: 1; transform: translateY(0);}
-    }
-    @keyframes glowPulse {
-      0% { text-shadow: 0 0 2px #3b82f6, 0 0 4px rgba(59,130,246,0.3);}
-      100% { text-shadow: 0 0 12px #3b82f6, 0 0 20px rgba(59,130,246,0.5);}
-    }
-
-    .hero-sub {
-      animation: fadeUp 1s ease-out 0.2s both;
-    }
-    .hero-btn {
-      animation: fadeUp 1s ease-out 0.4s both;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .hero-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 10px 25px -5px rgba(59,130,246,0.5);
-    }
-
-    /* skill cards with hover animation + floating */
-    .skill-card {
-      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      border: 1px solid rgba(55, 65, 81, 0.5);
-      background: #1e293b;
-      backdrop-filter: blur(4px);
-    }
-    .skill-card:hover {
-      transform: translateY(-6px) scale(1.02);
-      border-color: #3b82f6;
-      box-shadow: 0 20px 25px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(59,130,246,0.3);
-      background: #1e2a3e;
-    }
-
-    /* project card entry animation on scroll + interactive tilt */
-    .project-card {
-      transition: all 0.35s ease;
-      border: 1px solid #2d3748;
-      background: #111827;
-      opacity: 0;
-      transform: translateY(40px);
-      animation: cardReveal 0.7s forwards;
-    }
-    @keyframes cardReveal {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    .project-card:hover {
-      transform: translateY(-10px) scale(1.01);
-      border-color: #3b82f6;
-      box-shadow: 0 25px 30px -12px rgba(0,0,0,0.6);
-      background: #1f2937;
-    }
-
-    /* section title underline animation */
-    .section-title {
-      display: inline-block;
-      position: relative;
-    }
-    .section-title:after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 20%;
-      width: 60%;
-      height: 3px;
-      background: linear-gradient(90deg, #3b82f6, #a855f7, #3b82f6);
-      border-radius: 4px;
-      animation: underlineFlow 2s infinite alternate ease-in-out;
-    }
-    @keyframes underlineFlow {
-      0% { width: 40%; opacity: 0.6; left: 30%;}
-      100% { width: 70%; opacity: 1; left: 15%;}
-    }
-
-    /* contact area with animated border glow */
-    .contact-glass {
-      background: rgba(17, 24, 39, 0.6);
-      backdrop-filter: blur(8px);
-      border-radius: 2rem;
-      border: 1px solid rgba(59,130,246,0.3);
-      transition: box-shadow 0.4s;
-    }
-    .contact-glass:hover {
-      box-shadow: 0 0 20px rgba(59,130,246,0.3);
-    }
-
-    /* floating icons animation */
-    .floating-icon {
-      animation: floatIcon 3s infinite ease-in-out;
-    }
-    @keyframes floatIcon {
-      0% { transform: translateY(0px);}
-      50% { transform: translateY(-6px);}
-      100% { transform: translateY(0px);}
-    }
-
-    /* custom pulse for hire me */
-    .pulse-ring {
-      box-shadow: 0 0 0 0 rgba(59,130,246,0.6);
-      animation: pulse-ring 1.8s infinite;
-    }
-    @keyframes pulse-ring {
-      0% { box-shadow: 0 0 0 0 rgba(59,130,246,0.5);}
-      70% { box-shadow: 0 0 0 12px rgba(59,130,246,0);}
-      100% { box-shadow: 0 0 0 0 rgba(59,130,246,0);}
-    }
-
-    /* social icons micro animation */
-    .social-icon {
-      transition: all 0.2s;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .social-icon:hover {
-      transform: translateY(-4px) scale(1.1);
-      color: #60a5fa;
-    }
-
-    /* stagger animation for skill grid items */
-    .skill-card {
-      animation: skillFadeIn 0.5s backwards;
-    }
-    @keyframes skillFadeIn {
-      from { opacity: 0; transform: scale(0.92);}
-      to { opacity: 1; transform: scale(1);}
-    }
-
-    .skill-card:nth-child(1) { animation-delay: 0.05s; }
-    .skill-card:nth-child(2) { animation-delay: 0.1s; }
-    .skill-card:nth-child(3) { animation-delay: 0.15s; }
-    .skill-card:nth-child(4) { animation-delay: 0.2s; }
-    .skill-card:nth-child(5) { animation-delay: 0.25s; }
-    .skill-card:nth-child(6) { animation-delay: 0.3s; }
-    .skill-card:nth-child(7) { animation-delay: 0.35s; }
-    .skill-card:nth-child(8) { animation-delay: 0.4s; }
-
-    /* tech badge rotation subtle */
-    .badge-icon {
-      transition: transform 0.2s;
-    }
-    .skill-card:hover .badge-icon {
-      transform: rotate(3deg) scale(1.1);
-    }
-
-    /* responsive tweaks */
-    @media (max-width: 768px) {
-      .section-title:after {
-        width: 50%;
-        left: 25%;
-      }
-    }
-  </style>
+  <title>Shubham Kale | Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<div class="animated-bg"></div>
 
-<!-- Navbar with glass morphing and hover animation -->
-<nav class="glass-nav fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4 shadow-lg transition-all duration-300">
-  <div class="flex items-center gap-2">
-    <i class="fas fa-code text-blue-400 text-2xl floating-icon"></i>
-    <h1 class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Shubham Kale</h1>
-  </div>
-  <div class="space-x-5 md:space-x-7 text-sm md:text-base">
-    <a href="#about" class="nav-link text-gray-200 hover:text-blue-400 transition">About</a>
-    <a href="#skills" class="nav-link text-gray-200 hover:text-blue-400 transition">Skills</a>
-    <a href="#projects" class="nav-link text-gray-200 hover:text-blue-400 transition">Projects</a>
-    <a href="#contact" class="nav-link text-gray-200 hover:text-blue-400 transition">Contact</a>
-  </div>
-</nav>
+<body class="bg-gray-900 text-white font-sans">
 
-<!-- Hero Section with rich animations -->
-<section class="relative pt-32 pb-20 px-4 md:pt-40 text-center overflow-hidden">
-  <div class="max-w-4xl mx-auto">
-    <div class="inline-block mb-4 bg-blue-500/10 backdrop-blur-sm px-4 py-1 rounded-full border border-blue-500/30 text-blue-300 text-sm font-medium animate-pulse">
-      <i class="fas fa-magic mr-1"></i> Portfolio 2026
+  <!-- Navbar -->
+  <nav class="flex justify-between items-center p-6 bg-gray-800 shadow-md">
+    <h1 class="text-2xl font-bold text-blue-400">Shubham Kale</h1>
+    <div class="space-x-6">
+      <a href="#about" class="hover:text-blue-400">About</a>
+      <a href="#skills" class="hover:text-blue-400">Skills</a>
+      <a href="#projects" class="hover:text-blue-400">Projects</a>
+      <a href="#contact" class="hover:text-blue-400">Contact</a>
     </div>
-    <h2 class="hero-glow text-5xl md:text-7xl font-black mb-5 tracking-tight">
-      Hi, I'm <span class="bg-gradient-to-r from-blue-400 via-indigo-400 to-blue-500 bg-clip-text text-transparent">Shubham</span>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="text-center py-20">
+    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+      Hi, I'm <span class="text-blue-400">Shubham</span>
     </h2>
-    <p class="hero-sub text-gray-300 text-lg md:text-2xl max-w-2xl mx-auto flex flex-wrap justify-center gap-2 items-center">
-      <i class="fas fa-graduation-cap text-blue-400"></i> MCA Student 
-      <span class="w-2 h-2 rounded-full bg-blue-500 inline-block mx-1"></span> 
-      <i class="fas fa-check-circle text-cyan-400"></i> Software Tester 
-      <span class="w-2 h-2 rounded-full bg-blue-500 inline-block mx-1"></span>
-      <i class="fas fa-robot text-indigo-400"></i> Automation Enthusiast
+    <p class="text-gray-300 text-lg">
+      MCA Student | Software Tester | Automation Enthusiast
     </p>
-    <div class="hero-btn mt-8">
-      <a href="#contact" class="relative inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-3 rounded-full text-white font-semibold text-lg shadow-lg transition-all duration-300 pulse-ring hover:shadow-blue-500/40">
-        <i class="fas fa-paper-plane"></i> Hire Me
-        <i class="fas fa-arrow-right text-sm transition-transform group-hover:translate-x-1"></i>
-      </a>
-    </div>
-    <div class="mt-12 flex justify-center gap-6 text-2xl text-gray-400">
-      <i class="fab fa-github social-icon cursor-pointer hover:text-blue-400 transition-all"></i>
-      <i class="fab fa-linkedin social-icon cursor-pointer hover:text-blue-400 transition-all"></i>
-      <i class="fab fa-twitter social-icon cursor-pointer hover:text-blue-400 transition-all"></i>
-      <i class="fab fa-dev social-icon cursor-pointer hover:text-blue-400 transition-all"></i>
-    </div>
-  </div>
-  <!-- animated wave shape -->
-  <div class="absolute bottom-0 left-0 w-full overflow-hidden pointer-events-none">
-    <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative w-full h-12 opacity-20">
-      <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="#3b82f6" class="fill-blue-500/20"></path>
-    </svg>
-  </div>
-</section>
+    <a href="#contact" class="mt-6 inline-block bg-blue-500 px-6 py-2 rounded-lg hover:bg-blue-600">
+      Hire Me
+    </a>
+  </section>
 
-<!-- About Section with fade and micro animation -->
-<section id="about" class="py-20 px-6 max-w-5xl mx-auto relative">
-  <div class="flex flex-col md:flex-row gap-8 items-center backdrop-blur-sm bg-gray-900/30 p-8 rounded-2xl border border-gray-800 transition-all hover:border-blue-500/40 duration-500">
-    <div class="flex-shrink-0">
-      <div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gradient-to-br from-blue-500 to-indigo-700 flex items-center justify-center text-5xl shadow-2xl floating-icon">
-        <i class="fas fa-user-astronaut text-white"></i>
-      </div>
-    </div>
-    <div class="text-center md:text-left">
-      <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-400 mb-5">About Me</h2>
-      <p class="text-gray-200 leading-relaxed text-base md:text-lg">
-        I'm an <span class="text-blue-300 font-semibold">MCA student</span> with deep passion for software testing, automation, and cloud-native workflows. 
-        I design robust test frameworks, build <span class="text-cyan-300">CI/CD pipelines</span>, and develop full-stack solutions like ERP systems. 
-        My goal is to become an <span class="text-indigo-300">SDET</span> who bridges development & quality with innovative tools. I love solving real-world problems through clean code, automated testing, and modern cloud infrastructure. Let's craft something amazing.
-      </p>
-      <div class="flex flex-wrap gap-3 mt-6 justify-center md:justify-start">
-        <span class="bg-blue-500/20 text-blue-200 px-3 py-1 rounded-full text-sm border border-blue-500/30"><i class="far fa-smile mr-1"></i> 5+ Projects</span>
-        <span class="bg-indigo-500/20 text-indigo-200 px-3 py-1 rounded-full text-sm"><i class="fas fa-cloud-upload-alt mr-1"></i> AWS Cloud</span>
-        <span class="bg-purple-500/20 text-purple-200 px-3 py-1 rounded-full text-sm"><i class="fas fa-vial"></i> Test Automation</span>
-      </div>
-    </div>
-  </div>
-</section>
+  <!-- About -->
+  <section id="about" class="py-16 px-6 max-w-4xl mx-auto">
+    <h2 class="text-3xl font-bold text-blue-400 mb-4">About Me</h2>
+    <p class="text-gray-300">
+      I am an MCA student with a strong interest in software testing and automation.
+      I enjoy working with cloud technologies and building real-world projects like CI/CD pipelines
+      and ERP systems. I aim to become an SDET and contribute to high-quality software development.
+    </p>
+  </section>
 
-<!-- Skills section with grid animations and glowing effect -->
-<section id="skills" class="py-20 px-6 bg-gradient-to-b from-gray-900/60 to-gray-800/30">
-  <div class="max-w-6xl mx-auto">
-    <div class="text-center mb-12">
-      <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-400 inline-block">Technical Arsenal</h2>
-      <p class="text-gray-400 mt-4">Tools & technologies I master ✨</p>
+  <!-- Skills -->
+  <section id="skills" class="py-16 bg-gray-800 px-6">
+    <h2 class="text-3xl font-bold text-blue-400 text-center mb-8">Skills</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <div class="bg-gray-700 p-4 rounded-lg">HTML</div>
+      <div class="bg-gray-700 p-4 rounded-lg">CSS</div>
+      <div class="bg-gray-700 p-4 rounded-lg">JavaScript</div>
+      <div class="bg-gray-700 p-4 rounded-lg">Python</div>
+      <div class="bg-gray-700 p-4 rounded-lg">Selenium</div>
+      <div class="bg-gray-700 p-4 rounded-lg">AWS</div>
+      <div class="bg-gray-700 p-4 rounded-lg">SQL</div>
+      <div class="bg-gray-700 p-4 rounded-lg">Git</div>
     </div>
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 md:gap-7">
-      <div class="skill-card flex flex-col items-center p-5 rounded-xl">
-        <i class="fab fa-html5 text-4xl text-orange-500 badge-icon mb-2"></i>
-        <span class="font-semibold text-lg">HTML5</span>
-        <span class="text-xs text-gray-400">Semantic & SEO</span>
-      </div>
-      <div class="skill-card flex flex-col items-center p-5 rounded-xl">
-        <i class="fab fa-css3-alt text-4xl text-blue-400 badge-icon mb-2"></i>
-        <span class="font-semibold text-lg">CSS3</span>
-        <span class="text-xs text-gray-400">Flex/Grid/Animations</span>
-      </div>
-      <div class="skill-card flex flex-col items-center p-5 rounded-xl">
-        <i class="fab fa-js text-4xl text-yellow-400 badge-icon mb-2"></i>
-        <span class="font-semibold text-lg">JavaScript</span>
-        <span class="text-xs text-gray-400">ES6+, DOM</span>
-      </div>
-      <div class="skill-card flex flex-col items-center p-5 rounded-xl">
-        <i class="fab fa-python text-4xl text-cyan-400 badge-icon mb-2"></i>
-        <span class="font-semibold text-lg">Python</span>
-        <span class="text-xs text-gray-400">Pytest, Automation</span>
-      </div>
-      <div class="skill-card flex flex-col items-center p-5 rounded-xl">
-        <i class="fas fa-check-double text-4xl text-emerald-400 badge-icon mb-2"></i>
-        <span class="font-semibold text-lg">Selenium</span>
-        <span class="text-xs text-gray-400">WebDriver, Grid</span>
-      </div>
-      <div class="skill-card flex flex-col items-center p-5 rounded-xl">
-        <i class="fab fa-aws text-4xl text-orange-300 badge-icon mb-2"></i>
-        <span class="font-semibold text-lg">AWS</span>
-        <span class="text-xs text-gray-400">EC2, S3, Lambda</span>
-      </div>
-      <div class="skill-card flex flex-col items-center p-5 rounded-xl">
-        <i class="fas fa-database text-4xl text-sky-400 badge-icon mb-2"></i>
-        <span class="font-semibold text-lg">SQL</span>
-        <span class="text-xs text-gray-400">PostgreSQL, MySQL</span>
-      </div>
-      <div class="skill-card flex flex-col items-center p-5 rounded-xl">
-        <i class="fab fa-git-alt text-4xl text-rose-400 badge-icon mb-2"></i>
-        <span class="font-semibold text-lg">Git</span>
-        <span class="text-xs text-gray-400">GitHub Actions</span>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- Projects section with interactive cards and extra details -->
-<section id="projects" class="py-20 px-6 max-w-6xl mx-auto">
-  <div class="text-center mb-12">
-    <h2 class="section-title text-3xl md:text-4xl font-bold text-blue-400 inline-block">Featured Projects</h2>
-    <p class="text-gray-400 mt-3">Real-world solutions & automation pipelines 🚀</p>
-  </div>
-  <div class="grid md:grid-cols-2 gap-8">
-    <!-- Project 1: Construction ERP System (enhanced) -->
-    <div class="project-card rounded-2xl overflow-hidden transition-all">
-      <div class="bg-gradient-to-r from-blue-900/40 to-indigo-900/40 h-2 w-full"></div>
-      <div class="p-6">
-        <div class="flex items-center gap-3 mb-4">
-          <i class="fas fa-building text-3xl text-blue-400"></i>
-          <h3 class="text-2xl font-bold">Construction ERP System</h3>
-        </div>
-        <p class="text-gray-300 leading-relaxed mb-4">
-          End-to-end ERP solution for construction enterprises — manage projects, employee allocation, real-time site tracking, and material inventory. Integrated role-based dashboards and automated reporting for decision-makers.
+  <!-- Projects -->
+  <section id="projects" class="py-16 px-6 max-w-5xl mx-auto">
+    <h2 class="text-3xl font-bold text-blue-400 mb-8 text-center">Projects</h2>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Project 1 -->
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <h3 class="text-xl font-semibold mb-2">Construction ERP System</h3>
+        <p class="text-gray-300">
+          A system to manage projects, employees, sites, and real-time data for decision making.
         </p>
-        <div class="flex flex-wrap gap-2 mb-5">
-          <span class="text-xs bg-gray-700 px-3 py-1 rounded-full">React + Django</span>
-          <span class="text-xs bg-gray-700 px-3 py-1 rounded-full">PostgreSQL</span>
-          <span class="text-xs bg-gray-700 px-3 py-1 rounded-full">REST API</span>
-        </div>
-        <div class="flex gap-4 text-blue-300 text-sm font-medium">
-          <span><i class="fab fa-github mr-1"></i> Repo</span>
-          <span><i class="fas fa-external-link-alt mr-1"></i> Live Demo</span>
-        </div>
       </div>
-    </div>
-    <!-- Project 2: AWS CI/CD Deployment (enhanced) -->
-    <div class="project-card rounded-2xl overflow-hidden transition-all">
-      <div class="bg-gradient-to-r from-cyan-900/40 to-blue-900/40 h-2 w-full"></div>
-      <div class="p-6">
-        <div class="flex items-center gap-3 mb-4">
-          <i class="fab fa-aws text-3xl text-cyan-400"></i>
-          <h3 class="text-2xl font-bold">AWS CI/CD Pipeline</h3>
-        </div>
-        <p class="text-gray-300 leading-relaxed mb-4">
-          Fully automated deployment pipeline for static websites using GitHub Actions + AWS S3 & CloudFront. Triggered on every push — runs integration tests, builds assets, and syncs to S3 with zero downtime. Includes infrastructure-as-code scripts.
+
+      <!-- Project 2 -->
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <h3 class="text-xl font-semibold mb-2">AWS CI/CD Deployment</h3>
+        <p class="text-gray-300">
+          Automated deployment of static website to AWS S3 using GitHub Actions and Python.
         </p>
-        <div class="flex flex-wrap gap-2 mb-5">
-          <span class="text-xs bg-gray-700 px-3 py-1 rounded-full">GitHub Actions</span>
-          <span class="text-xs bg-gray-700 px-3 py-1 rounded-full">Terraform</span>
-          <span class="text-xs bg-gray-700 px-3 py-1 rounded-full">Python Boto3</span>
-        </div>
-        <div class="flex gap-4 text-cyan-300 text-sm font-medium">
-          <span><i class="fab fa-github mr-1"></i> Actions</span>
-          <span><i class="fas fa-cloud-upload-alt mr-1"></i> Live on S3</span>
-        </div>
       </div>
     </div>
-  </div>
-  <!-- additional micro project mention -->
-  <div class="mt-10 text-center">
-    <div class="inline-flex items-center gap-2 bg-gray-800/60 px-5 py-2 rounded-full border border-blue-500/40 backdrop-blur-sm">
-      <i class="fas fa-cogs text-blue-400 animate-spin" style="animation-duration: 3s;"></i>
-      <span class="text-sm">More: Test automation framework | Selenium Grid Docker | API testing suite</span>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- Contact Section with animated glass card & form-like UI -->
-<section id="contact" class="py-20 px-6">
-  <div class="max-w-3xl mx-auto">
-    <div class="contact-glass p-8 md:p-10 text-center transition-all duration-500">
-      <div class="mb-5 relative inline-block">
-        <i class="fas fa-envelope-open-text text-5xl text-blue-400 floating-icon"></i>
-        <span class="absolute -top-2 -right-2 w-4 h-4 bg-green-500 rounded-full animate-ping"></span>
-      </div>
-      <h2 class="text-3xl md:text-4xl font-bold text-blue-300 mb-3">Let's Connect</h2>
-      <p class="text-gray-300 mb-6 max-w-md mx-auto">Have a project in mind? or just want to collaborate? I'm a message away.</p>
-      <div class="flex flex-col gap-4 items-center">
-        <div class="flex items-center gap-4 bg-gray-800/60 p-3 rounded-xl w-full md:w-auto justify-center backdrop-blur-sm">
-          <i class="fas fa-envelope text-blue-400 text-xl"></i>
-          <span class="text-gray-200 font-mono">shubham.kale@mca.dev</span>
-          <button onclick="copyToClipboard()" class="bg-blue-600/40 hover:bg-blue-600 px-3 py-1 rounded-md text-sm transition"><i class="far fa-copy"></i> Copy</button>
-        </div>
-        <div class="flex gap-6 mt-4">
-          <a href="#" class="social-icon text-3xl text-gray-400 hover:text-blue-400 transition-all"><i class="fab fa-github"></i></a>
-          <a href="#" class="social-icon text-3xl text-gray-400 hover:text-blue-400 transition-all"><i class="fab fa-linkedin"></i></a>
-          <a href="#" class="social-icon text-3xl text-gray-400 hover:text-blue-400 transition-all"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="social-icon text-3xl text-gray-400 hover:text-blue-400 transition-all"><i class="fab fa-dev"></i></a>
-        </div>
-        <div class="mt-5 w-full">
-          <div class="relative group">
-            <input type="text" placeholder="Your email or message quick note..." class="w-full bg-gray-800/80 border border-gray-700 rounded-full py-3 px-5 text-white focus:outline-none focus:border-blue-500 transition-all">
-            <button class="absolute right-1 top-1 bg-blue-600 px-5 py-2 rounded-full text-sm font-semibold hover:bg-blue-500 transition">Send <i class="fas fa-paper-plane"></i></button>
-          </div>
-          <p class="text-xs text-gray-500 mt-3"><i class="fas fa-lock"></i> No spam, just quality tech talk.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  <!-- Contact -->
+  <section id="contact" class="py-16 bg-gray-800 px-6 text-center">
+    <h2 class="text-3xl font-bold text-blue-400 mb-4">Contact Me</h2>
+    <p class="text-gray-300 mb-4">Let's connect and work together</p>
+    <p>Email: shubham@example.com</p>
+  </section>
 
-<!-- Footer with dynamic year and subtle animation -->
-<footer class="text-center py-6 bg-gray-950/70 border-t border-gray-800 text-gray-400 text-sm">
-  <div class="flex justify-center gap-4 mb-2">
-    <i class="fas fa-heart text-red-400 animate-pulse"></i>
-    <span>Built with modern web magic</span>
-    <i class="fas fa-code text-blue-400"></i>
-  </div>
-  <p>© 2026 Shubham Kale — All code & creativity. <span class="inline-block hover:animate-bounce">✨</span></p>
-</footer>
+  <!-- Footer -->
+  <footer class="text-center p-4 bg-gray-900 text-gray-400">
+    © 2026 Shubham Kale. All rights reserved.
+  </footer>
 
-<script>
-  // simple copy functionality for contact email
-  function copyToClipboard() {
-    const email = "shubham.kale@mca.dev";
-    navigator.clipboard.writeText(email).then(() => {
-      const btn = event.target.closest('button');
-      const originalText = btn.innerText;
-      btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-      setTimeout(() => {
-        btn.innerHTML = '<i class="far fa-copy"></i> Copy';
-      }, 1800);
-    }).catch(() => {
-      alert("Manual copy: " + email);
-    });
-  }
-  // optional: add smooth anchor adjustment for fixed navbar
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const targetId = this.getAttribute('href');
-      if (targetId === "#" || targetId === "") return;
-      const target = document.querySelector(targetId);
-      if (target) {
-        e.preventDefault();
-        const offset = 80;
-        const elementPosition = target.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - offset;
-        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-      }
-    });
-  });
-</script>
 </body>
 </html>
